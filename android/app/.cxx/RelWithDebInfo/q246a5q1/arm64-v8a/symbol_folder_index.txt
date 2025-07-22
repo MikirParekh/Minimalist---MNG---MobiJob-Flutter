@@ -1,0 +1,1 @@
+/Users/tushar/IdeaProjects/minimalist/build/app/intermediates/cxx/RelWithDebInfo/q246a5q1/obj/arm64-v8a

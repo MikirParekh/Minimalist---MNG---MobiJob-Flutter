@@ -1,0 +1,2 @@
+/Users/tushar/IdeaProjects/minimalist/android/app/.cxx/RelWithDebInfo/q246a5q1/x86_64/CMakeFiles/edit_cache.dir
+/Users/tushar/IdeaProjects/minimalist/android/app/.cxx/RelWithDebInfo/q246a5q1/x86_64/CMakeFiles/rebuild_cache.dir
