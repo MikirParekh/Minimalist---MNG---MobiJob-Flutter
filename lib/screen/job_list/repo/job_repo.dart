@@ -94,16 +94,17 @@ class JobRepository {
   }
 
   Future<ResponseModel> jobDetailsStatusChange(
-      String jonNo,
-      String status,
-      String customerSignature,
-      String driverSignature,
-      String customerLatLong,
-      String driverLatLong,
-      String remark,
-      String pickupTime,
-      // bool withSign,
-      String raStatus) async {
+    String jonNo,
+    String status,
+    String customerSignature,
+    String driverSignature,
+    String customerLatLong,
+    String driverLatLong,
+    String remark,
+    String pickupTime,
+    int withSign,
+    // String raStatus
+  ) async {
     final SecureStorageService storageService = SecureStorageService();
     String? token = await storageService.readData('token');
     String driverno = await storageService.readData(CText.driverNo) ?? '';
@@ -122,8 +123,8 @@ class JobRepository {
       "Driver_No": driverno,
       "Remarks": remark,
       "PickUpTime": pickupTime,
-      // "withSignature": withSign,
-      "RAStatus": raStatus
+      "WithSignture": withSign,
+      // "RAStatus": raStatus
     };
 
     var d = jsonEncode(bodyData);
@@ -167,8 +168,9 @@ class JobRepository {
                 driverLatLong,
                 remark,
                 pickupTime,
-                // withSign
-                raStatus);
+                withSign
+                // raStatus
+                );
           } else {
             notify("session Expired Please Login Again");
             responseModel.message = 'Service is not working';

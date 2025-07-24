@@ -16,16 +16,17 @@ class JobDetailsSubmitBloc
       emit(GetJobDetailSubmitLoading());
       try {
         var result = await jobRepository.jobDetailsStatusChange(
-            event.jonNo,
-            event.status,
-            event.customerSignature,
-            event.driverSignature,
-            event.customerLatLong,
-            event.driverLatLong,
-            event.remark,
-            event.pickupTime,
-            // event.withSignature,
-            event.raStatus);
+          event.jonNo,
+          event.status,
+          event.customerSignature,
+          event.driverSignature,
+          event.customerLatLong,
+          event.driverLatLong,
+          event.remark,
+          event.pickupTime,
+          event.withSignature,
+          // event.raStatus
+        );
         if (result.status == true) {
           emit(GetJobDetailSubmitLoaded(responseModel: result));
         } else {

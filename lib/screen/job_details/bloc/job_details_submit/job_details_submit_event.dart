@@ -13,19 +13,20 @@ class SubmitJobDetailsEvent extends JobDetailsSubmitEvent {
   final String driverLatLong;
   final String remark;
   final String pickupTime;
-  // final bool withSignature;
-  final String raStatus;
-  const SubmitJobDetailsEvent(
-      {required this.jonNo,
-      required this.status,
-      required this.customerSignature,
-      required this.driverSignature,
-      required this.customerLatLong,
-      required this.driverLatLong,
-      required this.remark,
-      required this.pickupTime,
-      // required this.withSignature,
-      required this.raStatus});
+  final int withSignature;
+  // final String raStatus;
+  const SubmitJobDetailsEvent({
+    required this.jonNo,
+    required this.status,
+    required this.customerSignature,
+    required this.driverSignature,
+    required this.customerLatLong,
+    required this.driverLatLong,
+    required this.remark,
+    required this.pickupTime,
+    required this.withSignature,
+    // required this.raStatus
+  });
 
   @override
   List<Object?> get props => [
@@ -37,7 +38,7 @@ class SubmitJobDetailsEvent extends JobDetailsSubmitEvent {
         driverLatLong,
         remark,
         pickupTime,
-        // withSignature,
-        raStatus
+        withSignature,
+        // raStatus
       ];
 }

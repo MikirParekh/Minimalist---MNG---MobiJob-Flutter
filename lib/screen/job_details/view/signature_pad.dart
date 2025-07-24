@@ -208,20 +208,20 @@ class _SignaturePad extends State<SignaturePad> {
                                 //     widget.pickupTime,
                                 //     widget.status.toString()),
                                 SubmitJobDetailsEvent(
-                                    jonNo: widget.jonNo ?? '',
-                                    status: widget.status ?? '',
-                                    customerSignature:
-                                        base64Encode(customerSignature),
-                                    driverSignature:
-                                        base64Encode(driverSignature),
-                                    customerLatLong:
-                                        "${result.position!.latitude},${result.position!.longitude}",
-                                    driverLatLong:
-                                        "${result.position!.latitude},${result.position!.longitude}",
-                                    remark: widget.remark ?? "",
-                                    pickupTime: widget.pickupTime,
-                                    // withSignature: true,
-                                    raStatus: widget.status.toString()));
+                              jonNo: widget.jonNo ?? '',
+                              status: widget.status ?? '',
+                              customerSignature:
+                                  base64Encode(customerSignature),
+                              driverSignature: base64Encode(driverSignature),
+                              customerLatLong:
+                                  "${result.position!.latitude},${result.position!.longitude}",
+                              driverLatLong:
+                                  "${result.position!.latitude},${result.position!.longitude}",
+                              remark: widget.remark ?? "",
+                              pickupTime: widget.pickupTime,
+                              withSignature: 1,
+                              // raStatus: widget.status.toString()
+                            ));
                           } else {
                             LoaderUtils(context).stopLoading();
                             notify(result.msg.toString());
@@ -280,8 +280,9 @@ class _SignaturePad extends State<SignaturePad> {
                                         driverLatLong: "",
                                         remark: widget.remark ?? "",
                                         pickupTime: widget.pickupTime,
-                                        // withSignature: false
-                                        raStatus: widget.status.toString()));
+                                        withSignature: 0
+                                        // raStatus: widget.status.toString()
+                                        ));
                               } else {
                                 LoaderUtils(context).stopLoading();
                                 notify(result.msg.toString());
