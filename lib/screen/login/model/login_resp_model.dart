@@ -3,6 +3,7 @@ class LoginRespModel {
   String? message;
   bool? completed;
   String? token;
+  // int? hasPermission;
 
   LoginRespModel({this.data, this.message, this.completed});
 
@@ -11,6 +12,7 @@ class LoginRespModel {
     message = json['Message'];
     completed = json['Completed'];
     token = json['Token'] ?? '';
+    // hasPermission = json['Status'];
   }
 
   Map<String, dynamic> toJson() {
@@ -21,6 +23,7 @@ class LoginRespModel {
     data['Message'] = message;
     data['Completed'] = completed;
     data['Token'] = token;
+    // data['Status'] = hasPermission;
     return data;
   }
 }
@@ -30,6 +33,7 @@ class Data {
   String? password;
   String? userId;
   String? driverNo;
+  int? hasPermission;
 
   Data({this.username, this.password});
 
@@ -38,6 +42,7 @@ class Data {
     username = json['UserName'];
     password = json['Password'];
     driverNo = json['NAVDriverNo'];
+    hasPermission = json['Status'];
   }
 
   Map<String, dynamic> toJson() {
@@ -46,6 +51,7 @@ class Data {
     data['UserName'] = username;
     data['Password'] = password;
     data['NAVDriverNo'] = driverNo;
+    data['Status'] = hasPermission;
     return data;
   }
 }

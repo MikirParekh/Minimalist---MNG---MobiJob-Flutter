@@ -3,7 +3,8 @@ import 'dart:io' show Platform;
 
 class SecureStorageService {
   // Singleton instance for global access
-  static final SecureStorageService _instance = SecureStorageService._internal();
+  static final SecureStorageService _instance =
+      SecureStorageService._internal();
 
   factory SecureStorageService() {
     return _instance;

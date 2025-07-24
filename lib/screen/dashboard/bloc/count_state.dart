@@ -12,9 +12,10 @@ final class CountLoading extends CountState {}
 
 final class CountSuccess extends CountState {
   final CountModel countModel;
-  const CountSuccess({required this.countModel});
+  final GetStatusModel getStatusModel;
+  const CountSuccess({required this.countModel, required this.getStatusModel});
   @override
-  List<Object> get props => [countModel];
+  List<Object> get props => [countModel, getStatusModel];
 }
 
 final class CountError extends CountState {
@@ -22,4 +23,12 @@ final class CountError extends CountState {
   const CountError({required this.error});
   @override
   List<Object> get props => [error];
+}
+
+final class CountNotPermitted extends CountState {
+  final GetStatusModel getStatusModel;
+  const CountNotPermitted({required this.getStatusModel});
+
+  @override
+  List<Object> get props => [getStatusModel];
 }

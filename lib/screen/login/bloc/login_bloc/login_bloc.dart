@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:minimalist/screen/login/model/login_resp_model.dart';
 import 'package:minimalist/screen/login/repo/login_repo.dart';
 import 'package:minimalist/service/secure_storage_service.dart';
+import 'package:minimalist/utils/util.dart';
 part 'login_event.dart';
 part 'login_state.dart';
 
@@ -11,16 +12,27 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   LoginBloc() : super(LoginInitial()) {
     on<LoginButtonPressed>((event, emit) async {
-      try{
+      try {
         emit(LoginLoading());
-        final user = await loginRepository.login(event.username,event.password);
-        if(user.completed == true){
-          emit(LoginSuccess(loginRespModel: user));
-        }else{
-          emit(LoginError(error: user.message ?? '',));
+        final user =
+            await loginRepository.login(event.username, event.password);
+        if (user.completed == true) {
+          showLog("User Permission ---> ${user.data?.hasPermission}");
+          if (user.data?.hasPermission == 1) {
+            emit(LoginSuccess(loginRespModel: user));
+          } else {
+            emit(LoginError(error: "You do not have permission!"));
+          }
+        } else {
+          emit(LoginError(
+            error: user.message ?? '',
+          ));
         }
-      }catch(e){
-        emit(LoginError(error: e.toString(),));
+      } catch (e) {
+        showLog("LoginButtonPressed catch  -----> $e");
+        emit(LoginError(
+          error: e.toString(),
+        ));
       }
     });
   }

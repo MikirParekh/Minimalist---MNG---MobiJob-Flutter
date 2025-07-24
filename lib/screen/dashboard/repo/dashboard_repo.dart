@@ -4,16 +4,22 @@ import 'package:minimalist/core/api_const.dart';
 import 'package:minimalist/core/c_text.dart';
 import 'package:minimalist/screen/dashboard/model/count_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:minimalist/screen/dashboard/model/get_status_model.dart';
 import 'package:minimalist/screen/login/repo/login_repo.dart';
 import 'package:minimalist/service/secure_storage_service.dart';
+import 'package:minimalist/utils/util.dart';
 import 'package:minimalist/widget/toast_notification.dart';
 
-class DashboardRepository{
+class DashboardRepository {
   Future<CountModel> getCount() async {
     final SecureStorageService storageService = SecureStorageService();
     var driverNo = await storageService.readData(CText.driverNo);
     try {
       String? token = await storageService.readData('token');
+
+      showLog(
+          "GetCount Uri ----> ${ApiConst.baseUrl}GetJobCounts?DriverNo=$driverNo ");
+      showLog("Token ----> $token");
 
       http.Response response = await http.get(
         Uri.parse('${ApiConst.baseUrl}GetJobCounts?DriverNo=$driverNo'),
@@ -24,26 +30,72 @@ class DashboardRepository{
       ).timeout(const Duration(seconds: 30));
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
+
+        // await getStatus();
+
         return CountModel.fromJson(data);
       } else {
-        if(response.statusCode == 401){
+        if (response.statusCode == 401) {
           notify(response.statusCode.toString());
           LoginRepository loginRepository = LoginRepository();
           String? username = await storageService.readData('username');
           String? password = await storageService.readData('password');
-          final user = await loginRepository.login(username ?? '',password ?? '');
-          if(user.completed == true){
+          final user =
+              await loginRepository.login(username ?? '', password ?? '');
+          if (user.completed == true) {
             await getCount();
-          }else {
+          } else {
             notify("session Expired Please Login Again");
             return CountModel();
           }
         }
         throw Exception('Service is not working.');
       }
-    }on TimeoutException catch (_){
+    } on TimeoutException catch (_) {
       throw Exception("Time out");
-    }catch(e){
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<GetStatusModel> getStatus() async {
+    final SecureStorageService storageService = SecureStorageService();
+    var driverNo = await storageService.readData(CText.driverNo);
+    try {
+      String? token = await storageService.readData('token');
+
+      http.Response response = await http.get(
+        Uri.parse('${ApiConst.baseUrl}Getstatus?DriverNo=$driverNo'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+      ).timeout(const Duration(seconds: 30));
+
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+
+        showLog("GetStatus ------> $data");
+
+        return GetStatusModel.fromJson(data);
+      } else {
+        if (response.statusCode == 401) {
+          notify(response.statusCode.toString());
+          LoginRepository loginRepository = LoginRepository();
+          String? username = await storageService.readData('username');
+          String? password = await storageService.readData('password');
+          final user =
+              await loginRepository.login(username ?? '', password ?? '');
+          if (user.completed == true) {
+            await getCount();
+          } else {
+            notify("session Expired Please Login Again");
+            return GetStatusModel();
+          }
+        }
+        throw Exception('Service is not working.');
+      }
+    } catch (e) {
       throw Exception(e.toString());
     }
   }

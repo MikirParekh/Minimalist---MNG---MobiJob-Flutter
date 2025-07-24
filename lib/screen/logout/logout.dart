@@ -6,15 +6,15 @@ import 'package:minimalist/screen/splash/view/splash.dart';
 import 'package:minimalist/service/secure_storage_service.dart';
 
 class LogoutDialogBox extends StatefulWidget {
-  LogoutDialogBox({Key? key}) : super(key: key);
+  final bool? isPermitted;
+
+  const LogoutDialogBox({Key? key, this.isPermitted}) : super(key: key);
 
   @override
   State<LogoutDialogBox> createState() => _LogoutDialogBoxState();
 }
 
 class _LogoutDialogBoxState extends State<LogoutDialogBox> {
-
-
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -48,7 +48,9 @@ class _LogoutDialogBoxState extends State<LogoutDialogBox> {
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
               child: Text(
-                "Are you sure you want to log out? You'll need to login again to use the app.",
+                widget.isPermitted == false
+                    ? "You do not have permission!"
+                    : "Are you sure you want to log out? You'll need to login again to use the app.",
                 style: Theme.of(context).textTheme.labelSmall,
                 textAlign: TextAlign.center,
               ),
@@ -72,15 +74,15 @@ class _LogoutDialogBoxState extends State<LogoutDialogBox> {
                                 color: Colors.lightBlue,
                               ),
                               borderRadius:
-                              const BorderRadius.all(Radius.circular(12))),
+                                  const BorderRadius.all(Radius.circular(12))),
                           child: Center(
                               child: Text(
-                                "Cancel",
-                                style: GoogleFonts.quicksand(
-                                    color: Colors.lightBlue[900],
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12),
-                              )),
+                            "Cancel",
+                            style: GoogleFonts.quicksand(
+                                color: Colors.lightBlue[900],
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12),
+                          )),
                         ),
                       ),
                     ),
@@ -92,16 +94,18 @@ class _LogoutDialogBoxState extends State<LogoutDialogBox> {
                         width: double.infinity,
                         height: 40,
                         child: ElevatedButton(
-                          onPressed: ()  async {
-                            final SecureStorageService _storageService = SecureStorageService();
+                          onPressed: () async {
+                            final SecureStorageService _storageService =
+                                SecureStorageService();
                             await _storageService.writeData(CText.userId, '');
                             GoRouter.of(context).go("/");
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius:
-                              BorderRadius.circular(12), // <-- Radius
-                            ), backgroundColor: Colors.lightBlue[900],
+                                  BorderRadius.circular(12), // <-- Radius
+                            ),
+                            backgroundColor: Colors.lightBlue[900],
                           ),
                           child: Text(
                             "Log out",
