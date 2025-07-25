@@ -271,8 +271,8 @@ class _SignaturePad extends State<SignaturePad> {
                                     //     widget.status.toString()),
                                     SubmitJobDetailsEvent(
                                         jonNo: widget.jonNo ?? '',
-                                        // status: widget.status ?? '',
-                                        status: "11",
+                                        status: widget.status ?? '',
+                                        // status: "11",
                                         customerSignature: "",
                                         driverSignature: "",
                                         customerLatLong:
