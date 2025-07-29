@@ -1,7 +1,7 @@
 class GetStatusModel {
   Data? data;
   String? message;
-  Null? token;
+  Null token;
   bool? completed;
 
   GetStatusModel({this.data, this.message, this.token, this.completed});
@@ -30,7 +30,7 @@ class Data {
   String? userName;
   String? password;
   String? nAVDriverNo;
-  int? status;
+  bool? status;
 
   Data(
       {this.userId,

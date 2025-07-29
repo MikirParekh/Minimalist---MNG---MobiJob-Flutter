@@ -33,7 +33,7 @@ class Data {
   String? password;
   String? userId;
   String? driverNo;
-  int? hasPermission;
+  bool? hasPermission;
 
   Data({this.username, this.password});
 

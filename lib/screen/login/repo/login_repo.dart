@@ -21,6 +21,8 @@ class LoginRepository {
                 '${ApiConst.baseUrl}GetUserDetail?username=$username&password=$password'),
           )
           .timeout(const Duration(seconds: 30));
+      showLog("login api status code ----> ${response.statusCode}");
+      showLog("login api response ----> ${response.body}");
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
         showLog("Login response -----> $data");

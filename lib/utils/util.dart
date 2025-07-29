@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:intl/intl.dart';
 
 String? formatStrDate(String date) {
@@ -14,8 +16,8 @@ String? formatStrDate(String date) {
   }
 }
 
-void showLog(String message) {
-  print('\x1B[32m$message\x1B[0m');
+void showLog(String msg) {
+  // log('\x1B[32m$msg\x1B[0m');
 }
 
 bool? isAppStartTimeIsPassed(String date) {

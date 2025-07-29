@@ -75,9 +75,10 @@ class MyDashboard extends State<Dashboard> {
                       showDialog(
                         context: context,
                         builder: (context) => LogoutDialogBox(
-                            isPermitted: state.getStatusModel.data?.status == 1
-                                ? true
-                                : false),
+                            isPermitted: state.getStatusModel.data?.status
+                            // ? true
+                            // : false
+                            ),
                       );
                     }
                   },

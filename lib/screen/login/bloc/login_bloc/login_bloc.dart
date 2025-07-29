@@ -14,11 +14,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginButtonPressed>((event, emit) async {
       try {
         emit(LoginLoading());
+        showLog("before login api call");
         final user =
             await loginRepository.login(event.username, event.password);
+        showLog("after login api call. -----> $user");
         if (user.completed == true) {
           showLog("User Permission ---> ${user.data?.hasPermission}");
-          if (user.data?.hasPermission == 1) {
+          if (user.data?.hasPermission == true) {
             emit(LoginSuccess(loginRespModel: user));
           } else {
             emit(LoginError(error: "You do not have permission!"));
