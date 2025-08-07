@@ -74,11 +74,9 @@ class MyDashboard extends State<Dashboard> {
                     if (state is CountNotPermitted) {
                       showDialog(
                         context: context,
-                        builder: (context) => LogoutDialogBox(
-                            isPermitted: state.getStatusModel.data?.status
-                            // ? true
-                            // : false
-                            ),
+                        barrierDismissible: false,
+                        builder: (context) =>
+                            LogoutDialogBox(isPermitted: false),
                       );
                     }
                   },
@@ -168,7 +166,9 @@ class MyDashboard extends State<Dashboard> {
               onTap: () {
                 showDialog(
                   context: context,
-                  builder: (context) => LogoutDialogBox(),
+                  builder: (context) => LogoutDialogBox(
+                    isPermitted: true,
+                  ),
                 );
               },
               child: itemDashboard(
@@ -191,11 +191,8 @@ class MyDashboard extends State<Dashboard> {
         children: [
           InkWell(
             onTap: () {
-              context.push(JobList.path, extra: {"status": 0}).then(
-                (value) {
-                  context.read<CountBloc>().add(FetchCount());
-                },
-              );
+              context.read<CountBloc>().add(FetchCount());
+              context.push(JobList.path, extra: {"status": 0});
             },
             child: itemDashboard(
                 point: "Today's Jobs",
@@ -207,11 +204,8 @@ class MyDashboard extends State<Dashboard> {
           ),
           InkWell(
             onTap: () {
-              context.push(JobList.path, extra: {"status": 1}).then(
-                (value) {
-                  context.read<CountBloc>().add(FetchCount());
-                },
-              );
+              context.read<CountBloc>().add(FetchCount());
+              context.push(JobList.path, extra: {"status": 1});
             },
             child: itemDashboard(
                 point: "Tomorrow's Jobs",
@@ -223,11 +217,8 @@ class MyDashboard extends State<Dashboard> {
           ),
           InkWell(
             onTap: () {
-              context.push(JobList.path, extra: {"status": 2}).then(
-                (value) {
-                  context.read<CountBloc>().add(FetchCount());
-                },
-              );
+              context.read<CountBloc>().add(FetchCount());
+              context.push(JobList.path, extra: {"status": 2});
             },
             child: itemDashboard(
               point: "Today's Completed Jobs",
@@ -240,9 +231,8 @@ class MyDashboard extends State<Dashboard> {
           ),
           InkWell(
             onTap: () {
-              context.push(JobList.path, extra: {"status": 3}).then(
-                (value) {},
-              );
+              context.read<CountBloc>().add(FetchCount());
+              context.push(JobList.path, extra: {"status": 3});
             },
             child: itemDashboard(
               point: "Pending Sign Jobs",

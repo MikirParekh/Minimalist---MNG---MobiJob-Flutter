@@ -12,6 +12,7 @@ import 'package:minimalist/utils/util.dart';
 import 'package:minimalist/widget/toast_notification.dart';
 
 class JobRepository {
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   Future<List<JobModel>> getJob(
       int status, String fromDate, String toDate) async {
     final SecureStorageService storageService = SecureStorageService();
@@ -50,6 +51,7 @@ class JobRepository {
     }
   }
 
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   Future<JobModel> getJobDetails(String jobNo) async {
     debugPrint(jobNo.toString());
     final SecureStorageService storageService = SecureStorageService();

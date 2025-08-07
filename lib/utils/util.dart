@@ -17,7 +17,7 @@ String? formatStrDate(String date) {
 }
 
 void showLog(String msg) {
-  // log('\x1B[32m$msg\x1B[0m');
+  log('\x1B[32m$msg\x1B[0m');
 }
 
 bool? isAppStartTimeIsPassed(String date) {

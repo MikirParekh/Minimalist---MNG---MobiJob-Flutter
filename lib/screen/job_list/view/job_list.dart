@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:minimalist/core/extension.dart';
+import 'package:minimalist/screen/dashboard/bloc/count_bloc.dart';
 import 'package:minimalist/screen/job_details/view/job_details.dart';
 import 'package:minimalist/screen/job_list/bloc/get_job_bloc/get_job_bloc.dart';
 import 'package:minimalist/utils/util.dart';
@@ -28,14 +29,19 @@ class _JobList extends State<JobList> {
   void initState() {
     super.initState();
     callList();
+    context.read<CountBloc>().add(FetchCount());
   }
 
   void callList() {
     getJobBloc.add(
       FetchJobEvent(
         status: widget.status,
-        fromDate: widget.status == 1 ? DateTime.now().add(Duration(days: 1)).toFormattedString() : DateTime.now().toFormattedString(),
-        toDate: widget.status == 1 ? DateTime.now().add(Duration(days: 1)).toFormattedString() : DateTime.now().toFormattedString(),
+        fromDate: widget.status == 1
+            ? DateTime.now().add(Duration(days: 1)).toFormattedString()
+            : DateTime.now().toFormattedString(),
+        toDate: widget.status == 1
+            ? DateTime.now().add(Duration(days: 1)).toFormattedString()
+            : DateTime.now().toFormattedString(),
       ),
     );
   }
@@ -49,11 +55,13 @@ class _JobList extends State<JobList> {
           backgroundColor: Colors.lightBlue[900],
           iconTheme: const IconThemeData(color: Colors.white),
           title: Text(
-            widget.status == 0 ? "Today's Jobs List" : widget.status == 1
-                ? "Tomorrow's Jobs List"
-                : widget.status == 2
-                ? "Today's Completed Jobs List"
-                : "Pending Sign Job",
+            widget.status == 0
+                ? "Today's Jobs List"
+                : widget.status == 1
+                    ? "Tomorrow's Jobs List"
+                    : widget.status == 2
+                        ? "Today's Completed Jobs List"
+                        : "Pending Sign Job",
             style: GoogleFonts.quicksand(color: Colors.white),
           ),
           actions: [
@@ -105,12 +113,15 @@ class _JobList extends State<JobList> {
                     itemBuilder: (context, index) {
                       var job = state.list[index];
                       return InkWell(
-                        onTap: () => context.push(JobDetails.path, extra: {
-                          "jobNo": job.jobNo,
-                          "listStatus": widget.status.toString(),
-                        }).then((value){
-                          if(value == true) callList();
-                        }),
+                        onTap: () {
+                          context.read<CountBloc>().add(FetchCount());
+                          context.push(JobDetails.path, extra: {
+                            "jobNo": job.jobNo,
+                            "listStatus": widget.status.toString(),
+                          }).then((value) {
+                            if (value == true) callList();
+                          });
+                        },
                         child: Column(
                           children: [
                             Padding(
@@ -139,19 +150,22 @@ class _JobList extends State<JobList> {
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                           style: GoogleFonts.quicksand(
-                                              fontWeight: FontWeight.w500,),
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                         ),
                                         Text(
                                           job.jobNo ?? '',
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                           style: GoogleFonts.quicksand(
-                                              fontWeight: FontWeight.w900,),
+                                            fontWeight: FontWeight.w900,
+                                          ),
                                         ),
                                         Text(
                                           '${formatStrDate(job.pickUpDate ?? '') ?? ""} ${formatStrTime(job.pickUpTime ?? '') ?? ''}',
                                           style: GoogleFonts.quicksand(
-                                              fontWeight: FontWeight.w900,),
+                                            fontWeight: FontWeight.w900,
+                                          ),
                                         ),
                                       ],
                                     ),

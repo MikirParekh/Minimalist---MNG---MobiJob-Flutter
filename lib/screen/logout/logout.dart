@@ -17,13 +17,16 @@ class LogoutDialogBox extends StatefulWidget {
 class _LogoutDialogBoxState extends State<LogoutDialogBox> {
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Constants.padding),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(Constants.padding),
+        ),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        child: contentBox(context),
       ),
-      elevation: 0,
-      backgroundColor: Colors.transparent,
-      child: contentBox(context),
     );
   }
 
@@ -59,34 +62,36 @@ class _LogoutDialogBoxState extends State<LogoutDialogBox> {
               padding: const EdgeInsets.fromLTRB(8, 16, 8, 0),
               child: Row(
                 children: <Widget>[
-                  Expanded(
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                        child: Container(
-                          width: double.infinity,
-                          height: 40,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.lightBlue,
+                  widget.isPermitted == true
+                      ? Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                              child: Container(
+                                width: double.infinity,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors.lightBlue,
+                                    ),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(12))),
+                                child: Center(
+                                    child: Text(
+                                  "Cancel",
+                                  style: GoogleFonts.quicksand(
+                                      color: Colors.lightBlue[900],
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12),
+                                )),
                               ),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(12))),
-                          child: Center(
-                              child: Text(
-                            "Cancel",
-                            style: GoogleFonts.quicksand(
-                                color: Colors.lightBlue[900],
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12),
-                          )),
-                        ),
-                      ),
-                    ),
-                  ),
+                            ),
+                          ),
+                        )
+                      : const SizedBox(),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),

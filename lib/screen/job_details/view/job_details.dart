@@ -1404,9 +1404,9 @@ class _JobDetails extends State<JobDetails> {
     {'label': 'JOB COMPLETED', 'value': 7, 'isChecked': false},
     {
       'label': 'MISSED PASSENGER',
-      'value': 12,
+      'value': 12, // VALUE UPDATE FROM 10 TO 12
       'isChecked': false
-    }, // VALUE UPDATE FROM 10 TO 12
+    },
     {'label': 'JOB CANCELLED BY', 'value': 4, 'isChecked': false},
     {'label': 'NO SHOW', 'value': 8, 'isChecked': false},
   ];

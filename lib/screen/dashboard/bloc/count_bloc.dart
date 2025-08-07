@@ -5,6 +5,7 @@ import 'package:minimalist/screen/dashboard/model/count_model.dart';
 import 'package:minimalist/screen/dashboard/model/get_status_model.dart';
 import 'package:minimalist/screen/dashboard/repo/dashboard_repo.dart';
 import 'package:minimalist/screen/logout/logout.dart';
+import 'package:minimalist/utils/util.dart';
 
 part 'count_event.dart';
 part 'count_state.dart';
@@ -16,6 +17,7 @@ class CountBloc extends Bloc<CountEvent, CountState> {
       try {
         emit(CountLoading());
         final getStatus = await dashboardRepository.getStatus();
+        showLog("getStatus result ---> $getStatus");
         if (getStatus.data?.status == true) {
           final count = await dashboardRepository.getCount();
           if (count.completed == true && getStatus.completed == true) {
