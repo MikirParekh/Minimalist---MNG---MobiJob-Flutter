@@ -152,6 +152,7 @@ class MyDashboard extends State<Dashboard> {
             /// Bottom Reset Password button
             InkWell(
               onTap: () {
+                context.read<CountBloc>().add(FetchCount());
                 context.push(ResetPassword.path);
               },
               child: itemDashboard(

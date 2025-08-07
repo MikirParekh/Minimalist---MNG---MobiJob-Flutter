@@ -28,8 +28,9 @@ class _JobList extends State<JobList> {
   @override
   void initState() {
     super.initState();
-    callList();
     context.read<CountBloc>().add(FetchCount());
+    callList();
+    // context.read<CountBloc>().add(FetchCount());
   }
 
   void callList() {
@@ -74,6 +75,9 @@ class _JobList extends State<JobList> {
                         color: Colors.white,
                       ),
                       onPressed: () async {
+                        context
+                            .read<CountBloc>()
+                            .add(FetchCount()); // calls logout dialog box
                         List<String>? dates =
                             await selectFromDate(context, widget.status);
                         if (dates != null) {

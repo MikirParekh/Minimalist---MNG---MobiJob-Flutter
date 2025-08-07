@@ -1365,6 +1365,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:minimalist/core/loader.dart';
+import 'package:minimalist/screen/dashboard/bloc/count_bloc.dart';
 import 'package:minimalist/screen/job_details/bloc/get_job_details_bloc/get_job_detail_bloc.dart';
 import 'package:minimalist/screen/job_details/view/signature_pad.dart';
 import 'package:minimalist/screen/job_list/model/job_model.dart';
@@ -1397,6 +1398,7 @@ class _JobDetails extends State<JobDetails> {
   @override
   void initState() {
     super.initState();
+    context.read<CountBloc>().add(FetchCount());
     getJobDetailBloc.add(FetchJobDetailEvent(jobNo: widget.jonNo ?? ''));
   }
 
@@ -2068,6 +2070,9 @@ class _JobDetails extends State<JobDetails> {
                                         padding: const EdgeInsets.all(8),
                                         child: MaterialButton(
                                           onPressed: () async {
+                                            context
+                                                .read<CountBloc>()
+                                                .add(FetchCount());
                                             LoaderUtils(context).startLoading();
                                             var result =
                                                 await getCurrentLocation();
@@ -2119,6 +2124,9 @@ class _JobDetails extends State<JobDetails> {
                                             width: double.maxFinite,
                                             child: MaterialButton(
                                               onPressed: () {
+                                                context
+                                                    .read<CountBloc>()
+                                                    .add(FetchCount());
                                                 int selectedIndex = statuses
                                                     .indexWhere((status) =>
                                                         status['isChecked']);
