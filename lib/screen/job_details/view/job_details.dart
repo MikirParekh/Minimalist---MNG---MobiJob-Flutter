@@ -1370,6 +1370,7 @@ import 'package:minimalist/screen/job_details/bloc/get_job_details_bloc/get_job_
 import 'package:minimalist/screen/job_details/view/signature_pad.dart';
 import 'package:minimalist/screen/job_list/model/job_model.dart';
 import 'package:minimalist/screen/job_list/repo/job_repo.dart';
+import 'package:minimalist/screen/logout/logout.dart';
 import 'package:minimalist/screen/map/google_map_widget.dart';
 import 'package:minimalist/utils/util.dart';
 import 'package:minimalist/widget/toast_notification.dart';
@@ -1602,36 +1603,47 @@ class _JobDetails extends State<JobDetails> {
                                                                       null
                                                                   ? null
                                                                   : () async {
-                                                                      LoaderUtils(
-                                                                              context)
-                                                                          .startLoading();
-                                                                      var response =
+                                                                      var activeStatus =
                                                                           await JobRepository()
-                                                                              .jobUpdateTime(
-                                                                        job.jobNo ??
-                                                                            '',
-                                                                        "${fullDateTime ?? " "}",
-                                                                      );
-                                                                      if (response
-                                                                              .status ==
+                                                                              .isActiveStatus();
+                                                                      if (activeStatus ==
                                                                           true) {
-                                                                        notify(
-                                                                            "Pickup Time Updated",
-                                                                            toastificationType:
-                                                                                ToastificationType.success);
-                                                                        getJobDetailBloc.add(FetchJobDetailEvent(
-                                                                            jobNo:
-                                                                                widget.jonNo ?? ''));
-                                                                        callListApi =
-                                                                            true;
+                                                                        LoaderUtils(context)
+                                                                            .startLoading();
+                                                                        var response =
+                                                                            await JobRepository().jobUpdateTime(
+                                                                          job.jobNo ??
+                                                                              '',
+                                                                          "${fullDateTime ?? " "}",
+                                                                        );
+                                                                        if (response.status ==
+                                                                            true) {
+                                                                          notify(
+                                                                              "Pickup Time Updated",
+                                                                              toastificationType: ToastificationType.success);
+                                                                          getJobDetailBloc
+                                                                              .add(FetchJobDetailEvent(jobNo: widget.jonNo ?? ''));
+                                                                          callListApi =
+                                                                              true;
+                                                                        } else {
+                                                                          notify(response
+                                                                              .message
+                                                                              .toString());
+                                                                        }
+                                                                        LoaderUtils(context)
+                                                                            .stopLoading();
                                                                       } else {
-                                                                        notify(response
-                                                                            .message
-                                                                            .toString());
+                                                                        LoaderUtils(context)
+                                                                            .stopLoading();
+                                                                        showDialog(
+                                                                          context:
+                                                                              context,
+                                                                          barrierDismissible:
+                                                                              false,
+                                                                          builder: (context) =>
+                                                                              LogoutDialogBox(isPermitted: false),
+                                                                        );
                                                                       }
-                                                                      LoaderUtils(
-                                                                              context)
-                                                                          .stopLoading();
                                                                     },
                                                           height: 50,
                                                           color: Colors
@@ -2070,36 +2082,51 @@ class _JobDetails extends State<JobDetails> {
                                         padding: const EdgeInsets.all(8),
                                         child: MaterialButton(
                                           onPressed: () async {
-                                            context
-                                                .read<CountBloc>()
-                                                .add(FetchCount());
-                                            LoaderUtils(context).startLoading();
-                                            var result =
-                                                await getCurrentLocation();
-                                            if (result.status == true) {
-                                              var response =
-                                                  await JobRepository()
-                                                      .jobStart(
-                                                job.jobNo ?? '',
-                                                "${result.position!.latitude},${result.position!.longitude}",
-                                              );
-                                              if (response.status == true) {
-                                                notify("Start",
-                                                    toastificationType:
-                                                        ToastificationType
-                                                            .success);
-                                                getJobDetailBloc.add(
-                                                    FetchJobDetailEvent(
-                                                        jobNo: widget.jonNo ??
-                                                            ''));
+                                            var activeStatus =
+                                                await JobRepository()
+                                                    .isActiveStatus();
+                                            if (activeStatus == true) {
+                                              LoaderUtils(context)
+                                                  .startLoading();
+
+                                              var result =
+                                                  await getCurrentLocation();
+                                              if (result.status == true) {
+                                                var response =
+                                                    await JobRepository()
+                                                        .jobStart(
+                                                  job.jobNo ?? '',
+                                                  "${result.position!.latitude},${result.position!.longitude}",
+                                                );
+                                                if (response.status == true) {
+                                                  notify("Start",
+                                                      toastificationType:
+                                                          ToastificationType
+                                                              .success);
+                                                  getJobDetailBloc.add(
+                                                      FetchJobDetailEvent(
+                                                          jobNo: widget.jonNo ??
+                                                              ''));
+                                                } else {
+                                                  notify(response.message
+                                                      .toString());
+                                                }
                                               } else {
-                                                notify(response.message
-                                                    .toString());
+                                                notify(result.msg.toString());
                                               }
+                                              LoaderUtils(context)
+                                                  .stopLoading();
                                             } else {
-                                              notify(result.msg.toString());
+                                              LoaderUtils(context)
+                                                  .stopLoading();
+                                              showDialog(
+                                                context: context,
+                                                barrierDismissible: false,
+                                                builder: (context) =>
+                                                    LogoutDialogBox(
+                                                        isPermitted: false),
+                                              );
                                             }
-                                            LoaderUtils(context).stopLoading();
                                           },
                                           height: 50,
                                           minWidth: 360,

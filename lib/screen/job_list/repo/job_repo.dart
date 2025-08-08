@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:minimalist/core/api_const.dart';
 import 'package:minimalist/core/c_text.dart';
 import 'package:minimalist/model/resp_model.dart';
+import 'package:minimalist/screen/dashboard/repo/dashboard_repo.dart';
 import 'package:minimalist/screen/job_list/model/job_model.dart';
 import 'package:minimalist/screen/login/repo/login_repo.dart';
 import 'package:minimalist/service/secure_storage_service.dart';
@@ -12,6 +13,12 @@ import 'package:minimalist/utils/util.dart';
 import 'package:minimalist/widget/toast_notification.dart';
 
 class JobRepository {
+  Future<bool?> isActiveStatus() async {
+    final status = await DashboardRepository().getStatus();
+    showLog("isActive status JobRepository --> ${status.data?.status}");
+    return status.data?.status;
+  }
+
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   Future<List<JobModel>> getJob(
       int status, String fromDate, String toDate) async {
@@ -144,44 +151,49 @@ class JobRepository {
       var data = jsonDecode(response.body);
 
       showLog("jobDetails update body ------->  $data");
-
-      if (response.statusCode == 200) {
-        if (data['Completed'] == true) {
-          responseModel.message = data['Message'] ?? '';
-          responseModel.status = true;
-        } else {
-          responseModel.message = data['Message'] ?? '';
-          responseModel.status = false;
-        }
-      } else {
-        if (response.statusCode == 401) {
-          LoginRepository loginRepository = LoginRepository();
-          String? username = await storageService.readData('username');
-          String? password = await storageService.readData('password');
-          final user =
-              await loginRepository.login(username ?? '', password ?? '');
-          if (user.completed == true) {
-            return await jobDetailsStatusChange(
-                jonNo,
-                status,
-                customerSignature,
-                driverSignature,
-                customerLatLong,
-                driverLatLong,
-                remark,
-                pickupTime,
-                withSign
-                // raStatus
-                );
+      final activeStatus = await isActiveStatus();
+      if (activeStatus == true) {
+        if (response.statusCode == 200) {
+          if (data['Completed'] == true) {
+            responseModel.message = data['Message'] ?? '';
+            responseModel.status = true;
           } else {
-            notify("session Expired Please Login Again");
-            responseModel.message = 'Service is not working';
+            responseModel.message = data['Message'] ?? '';
             responseModel.status = false;
           }
         } else {
-          responseModel.message = 'Service is not working';
-          responseModel.status = false;
+          if (response.statusCode == 401) {
+            LoginRepository loginRepository = LoginRepository();
+            String? username = await storageService.readData('username');
+            String? password = await storageService.readData('password');
+            final user =
+                await loginRepository.login(username ?? '', password ?? '');
+            if (user.completed == true) {
+              return await jobDetailsStatusChange(
+                  jonNo,
+                  status,
+                  customerSignature,
+                  driverSignature,
+                  customerLatLong,
+                  driverLatLong,
+                  remark,
+                  pickupTime,
+                  withSign
+                  // raStatus
+                  );
+            } else {
+              notify("session Expired Please Login Again");
+              responseModel.message = 'Service is not working';
+              responseModel.status = false;
+            }
+          } else {
+            responseModel.message = 'Service is not working';
+            responseModel.status = false;
+          }
         }
+      } else {
+        responseModel.message = 'You do not have permission';
+        responseModel.status = false;
       }
     } on TimeoutException catch (_) {
       responseModel.message = 'Connection Time Out';
@@ -221,14 +233,20 @@ class JobRepository {
           .timeout(const Duration(seconds: 30));
       debugPrint(response.statusCode.toString());
       var data = jsonDecode(response.body);
-      if (response.statusCode == 200) {
-        responseModel.status = true;
-      } else {
-        if (response.statusCode == 401) {
-          responseModel.message = 'Session Expired Please Login Again.';
+      final status = await isActiveStatus();
+      if (status == true) {
+        if (response.statusCode == 200) {
+          responseModel.status = true;
         } else {
-          responseModel.message = 'Service is not working';
+          if (response.statusCode == 401) {
+            responseModel.message = 'Session Expired Please Login Again.';
+          } else {
+            responseModel.message = 'Service is not working';
+          }
+          responseModel.status = false;
         }
+      } else {
+        responseModel.message = 'You do not have permission';
         responseModel.status = false;
       }
     } on TimeoutException catch (_) {
@@ -261,14 +279,20 @@ class JobRepository {
           .timeout(const Duration(seconds: 30));
       debugPrint(response.statusCode.toString());
       var data = jsonDecode(response.body);
-      if (response.statusCode == 200) {
-        responseModel.status = true;
-      } else {
-        if (response.statusCode == 401) {
-          responseModel.message = 'Session Expired Please Login Again.';
+      final status = await isActiveStatus();
+      if (status == true) {
+        if (response.statusCode == 200) {
+          responseModel.status = true;
         } else {
-          responseModel.message = 'Service is not working';
+          if (response.statusCode == 401) {
+            responseModel.message = 'Session Expired Please Login Again.';
+          } else {
+            responseModel.message = 'Service is not working';
+          }
+          responseModel.status = false;
         }
+      } else {
+        responseModel.message = 'You do not have permission';
         responseModel.status = false;
       }
     } on TimeoutException catch (_) {

@@ -44,7 +44,7 @@ class Data {
     userName = json['UserName'];
     password = json['Password'];
     nAVDriverNo = json['NAVDriverNo'];
-    status = json['Status'];
+    status = json['ISActive'];
   }
 
   Map<String, dynamic> toJson() {
@@ -53,7 +53,7 @@ class Data {
     data['UserName'] = this.userName;
     data['Password'] = this.password;
     data['NAVDriverNo'] = this.nAVDriverNo;
-    data['Status'] = this.status;
+    data['ISActive'] = this.status;
     return data;
   }
 }

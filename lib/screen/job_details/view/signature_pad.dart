@@ -9,6 +9,8 @@ import 'package:minimalist/core/loader.dart';
 import 'package:minimalist/screen/dashboard/bloc/count_bloc.dart';
 import 'package:minimalist/screen/dashboard/view/home_page.dart';
 import 'package:minimalist/screen/job_details/bloc/job_details_submit/job_details_submit_bloc.dart';
+import 'package:minimalist/screen/job_list/repo/job_repo.dart';
+import 'package:minimalist/screen/logout/logout.dart';
 import 'package:minimalist/widget/toast_notification.dart';
 import 'package:signature/signature.dart';
 import 'package:toastification/toastification.dart';
@@ -173,58 +175,63 @@ class _SignaturePad extends State<SignaturePad> {
                     width: double.maxFinite,
                     child: MaterialButton(
                       onPressed: () async {
+                        ///////////////////////////////////////////
                         try {
-                          LoaderUtils(context).startLoading();
-                          var result = await getCurrentLocation();
-                          if (result.status == true) {
-                            LoaderUtils(context).stopLoading();
-                            customerSignature = await customerController.toPngBytes(
-                                /* width: MediaQuery.of(context).size.width.toInt(),
-                              height: 150*/
-                                );
-                            driverSignature = await driverController.toPngBytes(
-                                /*width: MediaQuery.of(context).size.width.toInt(),
-                                height: 150*/
-                                );
-                            if (customerSignature == null) {
-                              notify("Customer signature is missing");
-                              return;
+                          var activeStatus =
+                              await JobRepository().isActiveStatus();
+                          if (activeStatus == true) {
+                            LoaderUtils(context).startLoading();
+                            var result = await getCurrentLocation();
+                            if (result.status == true) {
+                              LoaderUtils(context).stopLoading();
+                              customerSignature =
+                                  await customerController.toPngBytes(
+                                      /* width: MediaQuery.of(context).size.width.toInt(),height: 150*/
+                                      );
+                              driverSignature = await driverController.toPngBytes(
+                                  /*width: MediaQuery.of(context).size.width.toInt(),height: 150*/
+                                  );
+                              if (customerSignature == null) {
+                                notify("Customer signature is missing");
+                                return;
+                              }
+                              if (driverSignature == null) {
+                                notify("Driver signature is missing");
+                                return;
+                              }
+                              jobDetailsSubmitBloc.add(SubmitJobDetailsEvent(
+                                jonNo: widget.jonNo ?? '',
+                                status: widget.status ?? '',
+                                customerSignature:
+                                    base64Encode(customerSignature),
+                                driverSignature: base64Encode(driverSignature),
+                                customerLatLong:
+                                    "${result.position!.latitude},${result.position!.longitude}",
+                                driverLatLong:
+                                    "${result.position!.latitude},${result.position!.longitude}",
+                                remark: widget.remark ?? "",
+                                pickupTime: widget.pickupTime,
+                                withSignature: 1,
+                                // raStatus: widget.status.toString()
+                              ));
+                            } else {
+                              LoaderUtils(context).stopLoading();
+                              notify(result.msg.toString());
+                              showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (context) =>
+                                    LogoutDialogBox(isPermitted: false),
+                              );
                             }
-                            if (driverSignature == null) {
-                              notify("Driver signature is missing");
-                              return;
-                            }
-                            jobDetailsSubmitBloc.add(
-                                // SubmitJobDetailsEvent(
-                                //     widget.jonNo ?? '',
-                                //     widget.status ?? '',
-                                //     base64Encode(customerSignature),
-                                //     base64Encode(driverSignature),
-                                //     /*"${result.position!.latitude.toStringAsFixed(2)},${result.position!.longitude.toStringAsFixed(2)}",
-                                //   "${result.position!.latitude.toStringAsFixed(2)},${result.position!.longitude.toStringAsFixed(2)}",*/
-                                //     "${result.position!.latitude},${result.position!.longitude}",
-                                //     "${result.position!.latitude},${result.position!.longitude}",
-                                //     widget.remark ?? '',
-                                //     widget.pickupTime,
-                                //     widget.status.toString()),
-                                SubmitJobDetailsEvent(
-                              jonNo: widget.jonNo ?? '',
-                              status: widget.status ?? '',
-                              customerSignature:
-                                  base64Encode(customerSignature),
-                              driverSignature: base64Encode(driverSignature),
-                              customerLatLong:
-                                  "${result.position!.latitude},${result.position!.longitude}",
-                              driverLatLong:
-                                  "${result.position!.latitude},${result.position!.longitude}",
-                              remark: widget.remark ?? "",
-                              pickupTime: widget.pickupTime,
-                              withSignature: 1,
-                              // raStatus: widget.status.toString()
-                            ));
                           } else {
                             LoaderUtils(context).stopLoading();
-                            notify(result.msg.toString());
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (context) =>
+                                  LogoutDialogBox(isPermitted: false),
+                            );
                           }
                         } catch (e) {
                           LoaderUtils(context).stopLoading();
@@ -255,37 +262,38 @@ class _SignaturePad extends State<SignaturePad> {
                           width: double.maxFinite,
                           child: MaterialButton(
                             onPressed: () async {
-                              var result = await getCurrentLocation();
-                              if (result.status == true) {
-                                jobDetailsSubmitBloc.add(
-                                    // SubmitJobDetailsEvent(
-                                    //     widget.jonNo ?? '',
-                                    //     // "11",
-                                    //     widget.status ?? '',
-                                    //     "",
-                                    //     "",
-                                    //     "${result.position!.latitude},${result.position!.longitude}", // customer location
-                                    //     "",
-                                    //     widget.remark ?? '',
-                                    //     widget.pickupTime,
-                                    //     widget.status.toString()),
-                                    SubmitJobDetailsEvent(
-                                        jonNo: widget.jonNo ?? '',
-                                        status: widget.status ?? '',
-                                        // status: "11",
-                                        customerSignature: "",
-                                        driverSignature: "",
-                                        customerLatLong:
-                                            "${result.position!.latitude},${result.position!.longitude}",
-                                        driverLatLong: "",
-                                        remark: widget.remark ?? "",
-                                        pickupTime: widget.pickupTime,
-                                        withSignature: 0
-                                        // raStatus: widget.status.toString()
-                                        ));
+                              var activeStatus =
+                                  await JobRepository().isActiveStatus();
+                              if (activeStatus == true) {
+                                var result = await getCurrentLocation();
+                                if (result.status == true) {
+                                  jobDetailsSubmitBloc.add(
+                                      SubmitJobDetailsEvent(
+                                          jonNo: widget.jonNo ?? '',
+                                          status: widget.status ?? '',
+                                          // status: "11",
+                                          customerSignature: "",
+                                          driverSignature: "",
+                                          customerLatLong:
+                                              "${result.position!.latitude},${result.position!.longitude}",
+                                          driverLatLong: "",
+                                          remark: widget.remark ?? "",
+                                          pickupTime: widget.pickupTime,
+                                          withSignature: 0
+                                          // raStatus: widget.status.toString()
+                                          ));
+                                } else {
+                                  LoaderUtils(context).stopLoading();
+                                  notify(result.msg.toString());
+                                }
                               } else {
                                 LoaderUtils(context).stopLoading();
-                                notify(result.msg.toString());
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (context) =>
+                                      LogoutDialogBox(isPermitted: false),
+                                );
                               }
                             },
                             height: 50,
