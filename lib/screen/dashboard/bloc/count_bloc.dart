@@ -17,9 +17,10 @@ class CountBloc extends Bloc<CountEvent, CountState> {
       try {
         emit(CountLoading());
         final getStatus = await dashboardRepository.getStatus();
-        showLog("getStatus result ---> $getStatus");
+        showLog("getStatus result ---> ${getStatus.toJson()}");
         if (getStatus.data?.status == true) {
           final count = await dashboardRepository.getCount();
+          showLog("count result ---> ${count.toJson()}");
           if (count.completed == true && getStatus.completed == true) {
             emit(CountSuccess(countModel: count, getStatusModel: getStatus));
           } else {

@@ -8,8 +8,9 @@ String? formatStrDate(String date) {
   }
   try {
     DateTime parsedDate = DateTime.parse(date);
-    String formattedDate =
-        DateFormat('dd MMM yyyy').format(parsedDate); // Removed time
+    String formattedDate = DateFormat(
+      'dd MMM yyyy',
+    ).format(parsedDate); // Removed time
     return formattedDate;
   } catch (e) {
     return '';
@@ -40,8 +41,9 @@ String? formatStrTime(String time) {
   try {
     if (time == "1753-01-01T00:00:00") return "";
     DateTime parsedTime = DateTime.parse(time);
-    String formattedTime =
-        DateFormat('hh:mm a').format(parsedTime); // 12-hour format with AM/PM
+    String formattedTime = DateFormat(
+      'hh:mm a',
+    ).format(parsedTime); // 12-hour format with AM/PM
     return formattedTime;
   } catch (e) {
     return '';

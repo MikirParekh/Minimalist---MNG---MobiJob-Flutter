@@ -267,21 +267,21 @@ class _SignaturePad extends State<SignaturePad> {
                               if (activeStatus == true) {
                                 var result = await getCurrentLocation();
                                 if (result.status == true) {
-                                  jobDetailsSubmitBloc.add(
-                                      SubmitJobDetailsEvent(
-                                          jonNo: widget.jonNo ?? '',
-                                          status: widget.status ?? '',
-                                          // status: "11",
-                                          customerSignature: "",
-                                          driverSignature: "",
-                                          customerLatLong:
-                                              "${result.position!.latitude},${result.position!.longitude}",
-                                          driverLatLong: "",
-                                          remark: widget.remark ?? "",
-                                          pickupTime: widget.pickupTime,
-                                          withSignature: 0
-                                          // raStatus: widget.status.toString()
-                                          ));
+                                  jobDetailsSubmitBloc
+                                      .add(SubmitJobDetailsEvent(
+                                    jonNo: widget.jonNo ?? '',
+                                    status: widget.status ?? '',
+                                    // status: "11",
+                                    customerSignature: "",
+                                    driverSignature: "",
+                                    customerLatLong:
+                                        "${result.position!.latitude},${result.position!.longitude}",
+                                    driverLatLong: "",
+                                    remark: widget.remark ?? "",
+                                    pickupTime: widget.pickupTime,
+                                    withSignature: widget.status == '7' ? 0 : 1,
+                                    // raStatus: widget.status.toString()
+                                  ));
                                 } else {
                                   LoaderUtils(context).stopLoading();
                                   notify(result.msg.toString());
