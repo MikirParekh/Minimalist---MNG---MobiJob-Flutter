@@ -1483,6 +1483,12 @@ class _JobDetails extends State<JobDetails> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
+                                              state.job.jobNo ?? '',
+                                              style: GoogleFonts.quicksand(
+                                                  fontWeight: FontWeight.w900,
+                                                  fontSize: 15),
+                                            ),
+                                            Text(
                                               job.customerName ?? '',
                                               style: GoogleFonts.quicksand(
                                                   fontWeight: FontWeight.w900),
@@ -2257,8 +2263,9 @@ class _JobDetails extends State<JobDetails> {
       formattedEndTimeDate =
           DateFormat('dd MMM yyyy hh:mm a').format(parsedDate);
     }
-    return ListView(
-      //crossAxisAlignment: CrossAxisAlignment.center,
+    // return ListView(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
@@ -2271,6 +2278,11 @@ class _JobDetails extends State<JobDetails> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Text(
+                      job.jobNo ?? '',
+                      style: GoogleFonts.quicksand(
+                          fontWeight: FontWeight.w900, fontSize: 15),
+                    ),
                     Text(
                       job.customerName ?? '',
                       style: GoogleFonts.quicksand(fontWeight: FontWeight.w900),
@@ -2301,23 +2313,70 @@ class _JobDetails extends State<JobDetails> {
           height: 2,
           margin: const EdgeInsets.fromLTRB(26, 0, 26, 0),
         ),
-        Container(
-          padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-          margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-          decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(16)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    /*Column(
+        Expanded(
+          child: Container(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+            margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(16)),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        /*Column(
+                          children: [
+                            Text(
+                              'Pick Up Date',
+                              style: GoogleFonts.quicksand(
+                                fontSize: 15,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              //'${formatStrDate(job.pickUpDate ?? '')}',
+                              formatStrDate(job.App_startDate ?? '') ?? "",
+                              style: GoogleFonts.quicksand(
+                                fontSize: 15,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),*/
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Pickup Time',
+                              style: GoogleFonts.quicksand(
+                                fontSize: 15,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              convertTo12HourFormat(job.pickUpTime ?? ''),
+                              style: GoogleFonts.quicksand(
+                                fontSize: 15,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  /*Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+                    child: Column(
                       children: [
                         Text(
-                          'Pick Up Date',
+                          'Sales ID',
                           style: GoogleFonts.quicksand(
                             fontSize: 15,
                             color: Colors.black,
@@ -2325,20 +2384,116 @@ class _JobDetails extends State<JobDetails> {
                           ),
                         ),
                         Text(
-                          //'${formatStrDate(job.pickUpDate ?? '')}',
-                          formatStrDate(job.App_startDate ?? '') ?? "",
+                          job.salesID ?? '',
                           style: GoogleFonts.quicksand(
                             fontSize: 15,
                             color: Colors.black,
                           ),
                         ),
                       ],
-                    ),*/
-                    Column(
+                    ),
+                  ),*/
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        /*Column(
+                          children: [
+                            Text(
+                              'Issued By',
+                              style: GoogleFonts.quicksand(
+                                fontSize: 15,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              job.issuedBy ?? '',
+                              style: GoogleFonts.quicksand(
+                                fontSize: 15,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),*/
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Service Type',
+                              style: GoogleFonts.quicksand(
+                                fontSize: 15,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              job.serviceType.toString(),
+                              style: GoogleFonts.quicksand(
+                                fontSize: 15,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Transfer Type',
+                              style: GoogleFonts.quicksand(
+                                fontSize: 15,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              job.transferType.toString(),
+                              style: GoogleFonts.quicksand(
+                                fontSize: 15,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                        /*Column(
+                          children: [
+                            Text(
+                              'Car Reg. No.',
+                              style: GoogleFonts.quicksand(
+                                fontSize: 15,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              job.carRegNo ?? '',
+                              style: GoogleFonts.quicksand(
+                                fontSize: 15,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),*/
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Pickup Time',
+                          'Car Type',
                           style: GoogleFonts.quicksand(
                             fontSize: 15,
                             color: Colors.black,
@@ -2346,7 +2501,7 @@ class _JobDetails extends State<JobDetails> {
                           ),
                         ),
                         Text(
-                          convertTo12HourFormat(job.pickUpTime ?? ''),
+                          job.carType ?? '',
                           style: GoogleFonts.quicksand(
                             fontSize: 15,
                             color: Colors.black,
@@ -2354,60 +2509,14 @@ class _JobDetails extends State<JobDetails> {
                         ),
                       ],
                     ),
-                  ],
-                ),
-              ),
-              /*Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-                child: Column(
-                  children: [
-                    Text(
-                      'Sales ID',
-                      style: GoogleFonts.quicksand(
-                        fontSize: 15,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      job.salesID ?? '',
-                      style: GoogleFonts.quicksand(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-              ),*/
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    /*Column(
-                      children: [
-                        Text(
-                          'Issued By',
-                          style: GoogleFonts.quicksand(
-                            fontSize: 15,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          job.issuedBy ?? '',
-                          style: GoogleFonts.quicksand(
-                            fontSize: 15,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
-                    ),*/
-                    Column(
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Service Type',
+                          'Customer/Booking Agent',
                           style: GoogleFonts.quicksand(
                             fontSize: 15,
                             color: Colors.black,
@@ -2415,35 +2524,7 @@ class _JobDetails extends State<JobDetails> {
                           ),
                         ),
                         Text(
-                          job.serviceType.toString(),
-                          style: GoogleFonts.quicksand(
-                            fontSize: 15,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Transfer Type',
-                          style: GoogleFonts.quicksand(
-                            fontSize: 15,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          job.transferType.toString(),
+                          job.customerBookingAgent ?? '',
                           style: GoogleFonts.quicksand(
                             fontSize: 15,
                             color: Colors.black,
@@ -2451,131 +2532,38 @@ class _JobDetails extends State<JobDetails> {
                         ),
                       ],
                     ),
-                    /*Column(
-                      children: [
-                        Text(
-                          'Car Reg. No.',
-                          style: GoogleFonts.quicksand(
-                            fontSize: 15,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          job.carRegNo ?? '',
-                          style: GoogleFonts.quicksand(
-                            fontSize: 15,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
-                    ),*/
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Car Type',
-                      style: GoogleFonts.quicksand(
-                        fontSize: 15,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      job.carType ?? '',
-                      style: GoogleFonts.quicksand(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Customer/Booking Agent',
-                      style: GoogleFonts.quicksand(
-                        fontSize: 15,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      job.customerBookingAgent ?? '',
-                      style: GoogleFonts.quicksand(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+                  ),
 
-              /*Padding(
-                padding:
-                const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                child: Column(
-                  children: [
-                    Text(
-                      'Driver Name',
-                      style: GoogleFonts.quicksand(
-                        fontSize: 15,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  /*Padding(
+                    padding:
+                    const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Driver Name',
+                          style: GoogleFonts.quicksand(
+                            fontSize: 15,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          job.driverName ?? '',
+                          style: GoogleFonts.quicksand(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
                     ),
-                    Text(
-                      job.driverName ?? '',
-                      style: GoogleFonts.quicksand(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-              ),*/
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Passenger Name',
-                      style: GoogleFonts.quicksand(
-                        fontSize: 15,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      job.passengerName ?? '',
-                      style: GoogleFonts.quicksand(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
+                  ),*/
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Reference',
+                          'Passenger Name',
                           style: GoogleFonts.quicksand(
                             fontSize: 15,
                             color: Colors.black,
@@ -2583,7 +2571,7 @@ class _JobDetails extends State<JobDetails> {
                           ),
                         ),
                         Text(
-                          job.reference ?? '',
+                          job.passengerName ?? '',
                           style: GoogleFonts.quicksand(
                             fontSize: 15,
                             color: Colors.black,
@@ -2591,19 +2579,121 @@ class _JobDetails extends State<JobDetails> {
                         ),
                       ],
                     ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Reference',
+                              style: GoogleFonts.quicksand(
+                                fontSize: 15,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              job.reference ?? '',
+                              style: GoogleFonts.quicksand(
+                                fontSize: 15,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Tel no.',
+                              style: GoogleFonts.quicksand(
+                                fontSize: 15,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              job.telNo ?? '',
+                              style: GoogleFonts.quicksand(
+                                fontSize: 15,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Flight No.',
+                              style: GoogleFonts.quicksand(
+                                fontSize: 15,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              job.flightNo ?? '',
+                              style: GoogleFonts.quicksand(
+                                fontSize: 15,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              'ETA/ETD',
+                              style: GoogleFonts.quicksand(
+                                fontSize: 15,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              /*formatStrDate(job.eTAETD ??
+                                  '0001-01-01') ??
+                                  '',*/
+                              formatStrTime(job.eTAETD ?? '') ?? '',
+                              style: GoogleFonts.quicksand(
+                                fontSize: 15,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Tel no.',
+                          'Pickup Address',
                           style: GoogleFonts.quicksand(
                             fontSize: 15,
                             color: Colors.black,
@@ -2611,7 +2701,7 @@ class _JobDetails extends State<JobDetails> {
                           ),
                         ),
                         Text(
-                          job.telNo ?? '',
+                          job.pickupAddress ?? '',
                           style: GoogleFonts.quicksand(
                             fontSize: 15,
                             color: Colors.black,
@@ -2619,19 +2709,14 @@ class _JobDetails extends State<JobDetails> {
                         ),
                       ],
                     ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Flight No.',
+                          'Drop off Address',
                           style: GoogleFonts.quicksand(
                             fontSize: 15,
                             color: Colors.black,
@@ -2639,7 +2724,7 @@ class _JobDetails extends State<JobDetails> {
                           ),
                         ),
                         Text(
-                          job.flightNo ?? '',
+                          job.dropoffAddress ?? '',
                           style: GoogleFonts.quicksand(
                             fontSize: 15,
                             color: Colors.black,
@@ -2647,11 +2732,14 @@ class _JobDetails extends State<JobDetails> {
                         ),
                       ],
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'ETA/ETD',
+                          'END TIME',
                           style: GoogleFonts.quicksand(
                             fontSize: 15,
                             color: Colors.black,
@@ -2659,10 +2747,7 @@ class _JobDetails extends State<JobDetails> {
                           ),
                         ),
                         Text(
-                          /*formatStrDate(job.eTAETD ??
-                              '0001-01-01') ??
-                              '',*/
-                          formatStrTime(job.eTAETD ?? '') ?? '',
+                          formattedEndTimeDate,
                           style: GoogleFonts.quicksand(
                             fontSize: 15,
                             color: Colors.black,
@@ -2670,195 +2755,211 @@ class _JobDetails extends State<JobDetails> {
                         ),
                       ],
                     ),
-                  ],
-                ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Remarks/Special Instructions',
+                          style: GoogleFonts.quicksand(
+                            fontSize: 15,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          job.Remarks ?? '',
+                          style: GoogleFonts.quicksand(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: List.generate(
+                          statuses.length,
+                          (index) =>
+                              buildCheckbox(index, false, job.appStatus ?? 0)),
+                    ),
+                  ),
+                  job.customerSignature != null
+                      ? Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Customer Signature",
+                                style: GoogleFonts.quicksand(
+                                    fontWeight: FontWeight.w900),
+                              ),
+                              Image.memory(
+                                fit: BoxFit.contain,
+                                width: MediaQuery.of(context).size.width,
+                                base64Decode(
+                                  job.customerSignature,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      : const SizedBox(),
+                  job.Driver_latlong!.isEmpty
+                      ? SizedBox()
+                      : Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Start Point",
+                                style: GoogleFonts.quicksand(
+                                    fontWeight: FontWeight.w900),
+                              ),
+                              SizedBox(
+                                  height: 300,
+                                  width: double.maxFinite,
+                                  child: MapSample(
+                                    title: "Start Point",
+                                    latLngString: job.Driver_latlong ?? '',
+                                  )),
+                            ],
+                          ),
+                        ),
+                  job.Customer_latlong!.isEmpty
+                      ? SizedBox()
+                      : Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "End Point",
+                                style: GoogleFonts.quicksand(
+                                    fontWeight: FontWeight.w900),
+                              ),
+                              SizedBox(
+                                  height: 300,
+                                  width: double.maxFinite,
+                                  child: MapSample(
+                                    title: "End Point",
+                                    latLngString: job.Customer_latlong ?? '',
+                                  )),
+                            ],
+                          ),
+                        ),
+                  job.driverSignature != null
+                      ? Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Driver Signature",
+                                style: GoogleFonts.quicksand(
+                                    fontWeight: FontWeight.w900),
+                              ),
+                              Image.memory(
+                                  width: MediaQuery.of(context).size.width,
+                                  fit: BoxFit.contain,
+                                  base64Decode(job.driverSignature)),
+                            ],
+                          ),
+                        )
+                      : const SizedBox(),
+                ],
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Pickup Address',
-                      style: GoogleFonts.quicksand(
-                        fontSize: 15,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      job.pickupAddress ?? '',
-                      style: GoogleFonts.quicksand(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Drop off Address',
-                      style: GoogleFonts.quicksand(
-                        fontSize: 15,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      job.dropoffAddress ?? '',
-                      style: GoogleFonts.quicksand(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'END TIME',
-                      style: GoogleFonts.quicksand(
-                        fontSize: 15,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      formattedEndTimeDate,
-                      style: GoogleFonts.quicksand(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Remarks/Special Instructions',
-                      style: GoogleFonts.quicksand(
-                        fontSize: 15,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      job.Remarks ?? '',
-                      style: GoogleFonts.quicksand(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: List.generate(
-                      statuses.length,
-                      (index) =>
-                          buildCheckbox(index, false, job.appStatus ?? 0)),
-                ),
-              )
-            ],
+            ),
           ),
         ),
-        job.customerSignature != null
-            ? Padding(
-                padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Customer Signature",
-                      style: GoogleFonts.quicksand(fontWeight: FontWeight.w900),
-                    ),
-                    Image.memory(
-                      fit: BoxFit.contain,
-                      width: MediaQuery.of(context).size.width,
-                      base64Decode(
-                        job.customerSignature,
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            : const SizedBox(),
-        job.Driver_latlong!.isEmpty
-            ? SizedBox()
-            : Padding(
-                padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Start Point",
-                      style: GoogleFonts.quicksand(fontWeight: FontWeight.w900),
-                    ),
-                    SizedBox(
-                        height: 300,
-                        width: double.maxFinite,
-                        child: MapSample(
-                          title: "Start Point",
-                          latLngString: job.Driver_latlong ?? '',
-                        )),
-                  ],
-                ),
-              ),
-        job.Customer_latlong!.isEmpty
-            ? SizedBox()
-            : Padding(
-                padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "End Point",
-                      style: GoogleFonts.quicksand(fontWeight: FontWeight.w900),
-                    ),
-                    SizedBox(
-                        height: 300,
-                        width: double.maxFinite,
-                        child: MapSample(
-                          title: "End Point",
-                          latLngString: job.Customer_latlong ?? '',
-                        )),
-                  ],
-                ),
-              ),
-        job.driverSignature != null
-            ? Padding(
-                padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Driver Signature",
-                      style: GoogleFonts.quicksand(fontWeight: FontWeight.w900),
-                    ),
-                    Image.memory(
-                        width: MediaQuery.of(context).size.width,
-                        fit: BoxFit.contain,
-                        base64Decode(job.driverSignature)),
-                  ],
-                ),
-              )
-            : const SizedBox(),
+        // job.customerSignature != null
+        //     ? Padding(
+        //         padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+        //         child: Column(
+        //           crossAxisAlignment: CrossAxisAlignment.start,
+        //           children: [
+        //             Text(
+        //               "Customer Signature",
+        //               style: GoogleFonts.quicksand(fontWeight: FontWeight.w900),
+        //             ),
+        //             Image.memory(
+        //               fit: BoxFit.contain,
+        //               width: MediaQuery.of(context).size.width,
+        //               base64Decode(
+        //                 job.customerSignature,
+        //               ),
+        //             ),
+        //           ],
+        //         ),
+        //       )
+        //     : const SizedBox(),
+        // job.Driver_latlong!.isEmpty
+        //     ? SizedBox()
+        //     : Padding(
+        //         padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+        //         child: Column(
+        //           crossAxisAlignment: CrossAxisAlignment.start,
+        //           children: [
+        //             Text(
+        //               "Start Point",
+        //               style: GoogleFonts.quicksand(fontWeight: FontWeight.w900),
+        //             ),
+        //             SizedBox(
+        //                 height: 300,
+        //                 width: double.maxFinite,
+        //                 child: MapSample(
+        //                   title: "Start Point",
+        //                   latLngString: job.Driver_latlong ?? '',
+        //                 )),
+        //           ],
+        //         ),
+        //       ),
+        // job.Customer_latlong!.isEmpty
+        //     ? SizedBox()
+        //     : Padding(
+        //         padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+        //         child: Column(
+        //           crossAxisAlignment: CrossAxisAlignment.start,
+        //           children: [
+        //             Text(
+        //               "End Point",
+        //               style: GoogleFonts.quicksand(fontWeight: FontWeight.w900),
+        //             ),
+        //             SizedBox(
+        //                 height: 300,
+        //                 width: double.maxFinite,
+        //                 child: MapSample(
+        //                   title: "End Point",
+        //                   latLngString: job.Customer_latlong ?? '',
+        //                 )),
+        //           ],
+        //         ),
+        //       ),
+        // job.driverSignature != null
+        //     ? Padding(
+        //         padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+        //         child: Column(
+        //           crossAxisAlignment: CrossAxisAlignment.start,
+        //           children: [
+        //             Text(
+        //               "Driver Signature",
+        //               style: GoogleFonts.quicksand(fontWeight: FontWeight.w900),
+        //             ),
+        //             Image.memory(
+        //                 width: MediaQuery.of(context).size.width,
+        //                 fit: BoxFit.contain,
+        //                 base64Decode(job.driverSignature)),
+        //           ],
+        //         ),
+        //       )
+        //     : const SizedBox(),
       ],
     );
   }

@@ -1,9 +1,8 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:minimalist/screen/job_list/model/job_model.dart';
 import 'package:minimalist/screen/job_list/repo/job_repo.dart';
+import 'package:minimalist/utils/util.dart';
 
 part 'get_job_detail_event.dart';
 part 'get_job_detail_state.dart';
@@ -13,10 +12,11 @@ class GetJobDetailBloc extends Bloc<GetJobDetailEvent, GetJobDetailState> {
   GetJobDetailBloc() : super(GetJobDetailInitial()) {
     on<FetchJobDetailEvent>((event, emit) async {
       emit(GetJobDetailLoading());
-      try{
+      try {
         var result = await jobRepository.getJobDetails(event.jobNo);
+        showLog("job details result ----> ${result.toJson()}");
         emit(GetJobDetailLoaded(job: result));
-      }catch(e){
+      } catch (e) {
         emit(GetJobDetailError(error: e.toString()));
       }
     });
